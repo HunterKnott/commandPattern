@@ -5,18 +5,18 @@ import java.util.ArrayList;
 public class Controller {
 	private static ArrayList<Database> databases = new ArrayList<>();
 	private static ArrayList<Command> commands = new ArrayList<>();
+	private static boolean inMacroCommand = false;
 	
 	private static void readFile(InputStream name) {
 		// Think of a better way to do this part, with macro command wrapping
 		StringBuilder stringBuilder = new StringBuilder();
 		ArrayList<Command> subCommands = new ArrayList<>();
-		boolean inMacroCommand = false;
 		
 		try (BufferedReader reader = new BufferedReader (new InputStreamReader(name))) {
 			String line;
 			while ((line = reader.readLine()) != null ) {
 				// Add some method here that processes a line
-				processLine(line, inMacroCommand, subCommands);
+				processLine(line, subCommands);
 				stringBuilder.append(line).append("\n");
 			}
 		} catch (IOException e) {
@@ -24,7 +24,7 @@ public class Controller {
 		}	
 	}
 	
-	private static void processLine(String line, boolean inMacroCommand, ArrayList<Command> subCommands) {
+	private static void processLine(String line, ArrayList<Command> subCommands) {
 		String[] parts = line.split(" ");
 		
 		switch(line.charAt(0)) {
@@ -74,12 +74,14 @@ public class Controller {
 			default:
 				System.out.println("Invalid line");
 		}
-		
-		// Add new commands to the command list
 	}
 	
 	private static Database makeDatabase(String id) {
 		return new Database(id);
+	}
+	
+	public static ArrayList<Database> getDatabases() {
+		return databases;
 	}
 	
 	public void run(String fileName) {
@@ -88,7 +90,10 @@ public class Controller {
 		InputStream inputStream = Controller.class.getResourceAsStream(fileName);
 		readFile(inputStream);
 		
-		// Make a sequence of command objects from commands
+		for (Command cmd : commands) {
+			cmd.execute();
+		}
+		
 		// Call all execute functions after sequence is complete
 		// Print all databases
 		// Undo each command, and print the affected database with each undo
