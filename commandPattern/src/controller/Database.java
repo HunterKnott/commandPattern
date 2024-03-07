@@ -16,7 +16,11 @@ public class Database {
 	}
 	
 	public void add(String key, String value) {
-		data.put(key, value);
+		if (data.containsKey(key)) {
+			System.out.println("Cannot add a record for a key that already exists");
+		} else {
+			data.put(key, value);
+		}
 	}
 	
 	public String get(String key) {
@@ -32,7 +36,11 @@ public class Database {
 	}
 	
 	public void remove(String key) {
-		data.remove(key);
+		if (data.containsKey(key)) {
+			data.remove(key);
+		} else {
+			System.out.println("Cannot remove a key that doesn't exist");
+		}
 	}
 	
 	public void display() {
