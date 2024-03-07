@@ -18,7 +18,18 @@ public class UpdateCommand implements Command {
 			}
 			i++;
 		}
-		Controller.getDatabases().get(i).update(parts[2], parts[3]);
+		
+		// A value is a string that could have spaces in it
+		StringBuilder joinedString = new StringBuilder();
+		for (int j = 3; j < parts.length; j++) {
+			joinedString.append(parts[j]);
+			if (j < parts.length - 1) {
+				joinedString.append(" ");
+			}
+		}
+		String result = joinedString.toString();
+		
+		Controller.getDatabases().get(i).update(parts[2], result);
 	}
 	
 	public void undo() {

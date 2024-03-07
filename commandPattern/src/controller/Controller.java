@@ -94,8 +94,10 @@ public class Controller {
 			cmd.execute();
 		}
 		
-		// Call all execute functions after sequence is complete
-		// Print all databases
+		for (Database db : databases) {
+			db.display();
+		}
+		
 		// Undo each command, and print the affected database with each undo
 		// After all undos, print all databases to ensure they're empty
 	}

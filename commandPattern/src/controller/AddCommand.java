@@ -19,8 +19,9 @@ public class AddCommand implements Command {
 			i++;
 		}
 		
+		// A value is a string that could have spaces in it
 		StringBuilder joinedString = new StringBuilder();
-		for (int j = 3; i < parts.length; j++) {
+		for (int j = 3; j < parts.length; j++) {
 		    joinedString.append(parts[j]);
 		    if (j < parts.length - 1) {
 		        joinedString.append(" ");

@@ -45,7 +45,7 @@ public class Database {
 	
 	public void display() {
 		for (Map.Entry<String, String> entry : data.entrySet()) {
-			System.out.println(entry.getKey() + "|" + entry.getValue());
+			System.out.println(getID() + ": " + entry.getKey() + "|" + entry.getValue());
 		}
 	}
 }
