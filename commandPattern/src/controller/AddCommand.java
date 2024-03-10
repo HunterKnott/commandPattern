@@ -2,23 +2,26 @@ package controller;
 
 public class AddCommand implements Command {
 	private String[] parts;
+	private int index;
 	
 	public AddCommand(String[] parts) {
 		this.parts = parts;
-	}
-	
-	public void execute() {
-		System.out.println(String.join(" ", parts));
 		
 		// Go to the right db in the list
-		int i = 0;
+		index = 0;
 		for (Database db : Controller.getDatabases()) {
 			if (db.getID().equals(parts[1])) {
 				break;
 			}
-			i++;
+			index++;
 		}
-		
+	}
+	
+	public int getIndex() {
+		return this.index;
+	}
+	
+	public void execute() {
 		// A value is a string that could have spaces in it
 		StringBuilder joinedString = new StringBuilder();
 		for (int j = 3; j < parts.length; j++) {
@@ -29,10 +32,10 @@ public class AddCommand implements Command {
 		}
 		String result = joinedString.toString();
 		
-		Controller.getDatabases().get(i).add(parts[2], result);
+		Controller.getDatabases().get(index).add(parts[2], result);
 	}
 	
 	public void undo() {
-		
+		Controller.getDatabases().get(index).remove(parts[2]);
 	}
 }

@@ -2,22 +2,28 @@ package controller;
 
 public class UpdateCommand implements Command {
 	private String[] parts;
+	private int index;
+	private String previous;
 	
 	public UpdateCommand(String[] parts) {
 		this.parts = parts;
-	}
-	
-	public void execute() {
-		System.out.println(String.join(" ", parts));
 		
 		// Go to the right db in the list
-		int i = 0;
+		index = 0;
 		for (Database db : Controller.getDatabases()) {
 			if (db.getID().equals(parts[1])) {
 				break;
 			}
-			i++;
+			index++;
 		}
+	}
+	
+	public int getIndex() {
+		return this.index;
+	}
+	
+	public void execute() {
+		previous = Controller.getDatabases().get(index).get(parts[2]);
 		
 		// A value is a string that could have spaces in it
 		StringBuilder joinedString = new StringBuilder();
@@ -29,10 +35,10 @@ public class UpdateCommand implements Command {
 		}
 		String result = joinedString.toString();
 		
-		Controller.getDatabases().get(i).update(parts[2], result);
+		Controller.getDatabases().get(index).update(parts[2], result);
 	}
 	
 	public void undo() {
-		
+		Controller.getDatabases().get(index).update(parts[2], previous);
 	}
 }

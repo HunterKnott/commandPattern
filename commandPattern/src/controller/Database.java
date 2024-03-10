@@ -44,6 +44,10 @@ public class Database {
 	}
 	
 	public void display() {
+		if (data.entrySet().isEmpty()) {
+			System.out.println(getID() + ": " + "[Empty]");
+		}
+		
 		for (Map.Entry<String, String> entry : data.entrySet()) {
 			System.out.println(getID() + ": " + entry.getKey() + "|" + entry.getValue());
 		}

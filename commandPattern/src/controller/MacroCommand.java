@@ -6,6 +6,10 @@ public class MacroCommand implements Command {
 		this.commands = commands;
 	}
 	
+	public int getIndex() {
+		return 0;
+	}
+	
 	public void execute() {
 		for (int i = 0; i < commands.length; i++) {
 			commands[i].execute();

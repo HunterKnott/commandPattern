@@ -8,7 +8,6 @@ public class Controller {
 	private static boolean inMacroCommand = false;
 	
 	private static void readFile(InputStream name) {
-		// Think of a better way to do this part, with macro command wrapping
 		StringBuilder stringBuilder = new StringBuilder();
 		ArrayList<Command> subCommands = new ArrayList<>();
 		
@@ -90,15 +89,32 @@ public class Controller {
 		InputStream inputStream = Controller.class.getResourceAsStream(fileName);
 		readFile(inputStream);
 		
+		// Execute all commands
 		for (Command cmd : commands) {
 			cmd.execute();
 		}
 		
+		// Print all databases after commands
+		System.out.println("Databases after all executes:");
+		for (Database db : databases) {
+			db.display();
+		}
+		
+		// Undo all commands in reverse order
+		for (int i = commands.size() - 1; i >= 0; i--) {
+		    Command cmd = commands.get(i);
+		    int currentIndex = cmd.getIndex();
+		    cmd.undo();
+		    System.out.println("\nDatabase " + databases.get(currentIndex).getID() + " after undoing command: ");
+		    databases.get(currentIndex).display();
+		}
+		
+		// Print all databases to ensure they're empty
+		System.out.println("\nDatabases after all undos:");
 		for (Database db : databases) {
 			db.display();
 		}
 		
 		// Undo each command, and print the affected database with each undo
-		// After all undos, print all databases to ensure they're empty
 	}
 }
